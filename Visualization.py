@@ -22,9 +22,8 @@ class VisualizationWorker(QObject):
             spectrum = np.fft.fft(self.buffer_deque.popleft())
             fft_time = (time.perf_counter() - t0) * 1e6  # µs
 
-            # step 2: prep data for QML
             t0 = time.perf_counter()
-            mags = np.abs(spectrum[:1152]).tolist()  # half spectrum
+            mags = np.abs(spectrum).tolist() 
             prep_time = (time.perf_counter() - t0) * 1e6  # µs
             self.dataReady.emit(mags, fft_time, prep_time)
     

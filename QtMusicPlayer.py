@@ -64,8 +64,6 @@ class MusicPlayerGUI(QMainWindow):
         self.playlist_widget.setModel(self.song_list)
         self.playlist_widget.clicked.connect(self.play_at_index)
         self.current_index: QModelIndex | None = None
-        self.engine = QQmlApplicationEngine()
-        
         self.visualization_worker_thread = QThread()
         self.visualization_worker = VisualizationWorker()
         self.audio_buffer = QAudioBufferOutput()
@@ -150,7 +148,8 @@ class MusicPlayerGUI(QMainWindow):
             self.player.pause()
 
     def stop_music(self):
-        self.player.stop()
+        if (self.player.playbackState() == QMediaPlayer.PlaybackState.PlayingState):
+            self.player.stop()
 
     def set_volume(self, value):
         self.audio_output.setVolume(value / 100.0)
