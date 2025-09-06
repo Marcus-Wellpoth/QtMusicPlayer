@@ -10,19 +10,16 @@ from PySide6.QtWidgets import (
     QLabel,
     QFileDialog,
 )
-from PySide6.QtCore import Qt, QTimer, QDir, QThread, Signal, Slot
+from PySide6.QtCore import Qt, QDir, QThread, Signal, Slot
 from PySide6.QtWidgets import QListView
 from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput, QAudioBufferOutput
 from PySide6.QtQuickWidgets import QQuickWidget
 from PySide6.QtCore import QUrl, QAbstractListModel, QModelIndex
-from PySide6.QtQml import QQmlApplicationEngine
 from Visualization import VisualizationWorker
 
 
 class SongListModel(QAbstractListModel):
     FilePathRole = Qt.UserRole + 1
-    
-
 
     def __init__(self, *args, songs, **kargs):
         super().__init__()
@@ -37,7 +34,7 @@ class SongListModel(QAbstractListModel):
             return self.songs[index.row()]
         return None
 
-    def rowCount(self, parent=QModelIndex()):
+    def rowCount(self, parent = QModelIndex()) -> int:
         return len(self.songs)
 
     def append(self, item_list):
@@ -218,15 +215,11 @@ class MusicPlayerGUI(QMainWindow):
         row = self.current_index.row()
         if self.song_list.index(row + 1, 0).isValid():
             self.play_at_index(self.song_list.index(row + 1, 0))
-        else:
-            return
 
     def play_previous(self):
         row = self.current_index.row()
         if self.song_list.index(row - 1, 0).isValid():
             self.play_at_index(self.song_list.index(row - 1, 0))
-        else:
-            return
 
     @property
     def current_index(self) -> QModelIndex | None:
@@ -248,6 +241,7 @@ class MusicPlayerGUI(QMainWindow):
     @Slot()
     def receive_data(self, mags: list, fft_time: float, prep_time: float):
         self.dataReady.emit(mags, fft_time, prep_time)
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

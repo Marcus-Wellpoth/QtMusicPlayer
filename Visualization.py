@@ -1,4 +1,4 @@
-from PySide6.QtCore import QUrl, Signal, Slot, QTimer, QObject
+from PySide6.QtCore import Signal, Slot, QTimer, QObject
 from PySide6.QtMultimedia import QAudioBuffer
 from collections import deque
 import numpy as np
