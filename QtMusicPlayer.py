@@ -169,6 +169,7 @@ class MusicPlayerGUI(QMainWindow):
             row = self.current_index.row() + 1
             if self.song_list.index(row, 0).isValid():
                 self.current_index = self.song_list.index(row, 0)
+                self.playlist_widget
                 self.play_at_index(self.current_index)
 
     def open_folder_dialog(self):
@@ -209,6 +210,7 @@ class MusicPlayerGUI(QMainWindow):
             self.player.setSource(
                 self.song_list.data(index, SongListModel.FilePathRole)
             )
+            self.playlist_widget.setCurrentIndex(self.current_index)
             self.player.play()
 
     def play_next(self):
