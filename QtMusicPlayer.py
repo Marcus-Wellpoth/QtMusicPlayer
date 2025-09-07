@@ -19,13 +19,40 @@ from Visualization import VisualizationWorker
 
 
 class SongListModel(QAbstractListModel):
+    """
+    A data model for the playlist. Inherits from QAbstractListModel.
+    Implements data() and rowCount()
+    
+    Attributes:
+        FilePathRole (int): User-defined view that triggers returning the full path of a .mp3 file.
+        songs (List[str]): List of full paths to the .mp3 files
+    """
+    
     FilePathRole = Qt.UserRole + 1
 
-    def __init__(self, *args, songs, **kargs):
+    def __init__(self, songs):
+        """
+        Constructor.  Takes a list of path to the .mp3 files as argument.
+        
+        Args:
+            songs (List[str]): A list of strings representing the full paths to .mp3 files.
+        """
         super().__init__()
         self.songs = songs or []
 
-    def data(self, index, role=Qt.DisplayRole) -> QModelIndex | None:
+    def data(self, index, role=Qt.DisplayRole) -> str | None:
+        """
+        Returns the data to be displayed depending on the role identifier given.
+        
+        Args:
+            index(QModelIndex): The index of the entry to be displayed.
+            role (Qt.DisplayRole | FilePathRole): The identifier. 
+        
+        Returns:
+            str | None: The filename without suffix if role=Qt-DisplayRole, 
+                        the full path if role=FilePathRole, 
+                        None if the index is invalid.
+        """
         if not index.isValid():
             return None
         if role == Qt.DisplayRole:
@@ -34,11 +61,27 @@ class SongListModel(QAbstractListModel):
             return self.songs[index.row()]
         return None
 
-    def rowCount(self, parent = QModelIndex()) -> int:
+    def rowCount(self, parent=QModelIndex()) -> int:
+        """
+        Returns the length of the list of .mp3 files
+        
+        Args:
+            parent (QModelIndex) : The parent, required by QAbstractListModel
+        
+        Returns:
+            int: The length of the list.
+        """
         return len(self.songs)
 
     def append(self, item_list):
-        row = len(self.songs)
+        """
+        Appends a list of paths of .mp3 files.
+        
+        Args:
+            item_list (List[str]): The list of paths to append.
+        
+        """
+        row = self.rowCount()
         self.beginInsertRows(QModelIndex(), row, row + len(item_list) - 1)
         self.songs.extend(item_list)
         self.endInsertRows()
