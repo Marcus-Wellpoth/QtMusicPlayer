@@ -93,7 +93,7 @@ class MusicPlayerGUI(QMainWindow):
 
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("myMusicPlayer Qt")
+        self.setWindowTitle("QtMusicPlayer")
         self.setGeometry(100, 100, 1000, 700)
         self.player = QMediaPlayer()
         self.audio_output = QAudioOutput()
@@ -198,7 +198,7 @@ class MusicPlayerGUI(QMainWindow):
         menu_bar = self.menuBar()
         file_menu = menu_bar.addMenu("&Datei")
 
-        open_file_action = file_menu.addAction("&Datei öffnen...")
+        open_file_action = file_menu.addAction("&Dateien öffnen...")
         open_file_action.triggered.connect(self.open_file_dialog)
 
         open_folder_action = file_menu.addAction("&Ordner öffnen...")
@@ -212,7 +212,6 @@ class MusicPlayerGUI(QMainWindow):
             row = self.current_index.row() + 1
             if self.song_list.index(row, 0).isValid():
                 self.current_index = self.song_list.index(row, 0)
-                self.playlist_widget
                 self.play_at_index(self.current_index)
 
     def open_folder_dialog(self):
@@ -233,10 +232,10 @@ class MusicPlayerGUI(QMainWindow):
                     self.play_at_index(self.current_index)
 
     def open_file_dialog(self):
-        file_path = QFileDialog.getOpenFileNames(
+        file_path, _ = QFileDialog.getOpenFileNames(
             self, "Dateien auswählen", filter="*.mp3"
         )
-        self.song_list.append(file_path[0])
+        self.song_list.append(file_path)
         if self.player.playbackState() != QMediaPlayer.PlaybackState.PlayingState:
             if self.current_index == None:
                 self.current_index = self.song_list.index(0, 0)
