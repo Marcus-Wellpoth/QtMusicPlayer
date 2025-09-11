@@ -32,7 +32,7 @@ class SongListModel(QAbstractListModel):
 
     def __init__(self, songs):
         """
-        Constructor.  Takes a list of path to the .mp3 files as argument.
+        Constructor.  Takes a list of paths to the .mp3 files as argument.
         
         Args:
             songs (List[str]): A list of strings representing the full paths to .mp3 files.
@@ -40,7 +40,7 @@ class SongListModel(QAbstractListModel):
         super().__init__()
         self.songs = songs or []
 
-    def data(self, index, role=Qt.DisplayRole) -> str | None:
+    def data(self, index: QModelIndex, role=Qt.DisplayRole) -> str | None:
         """
         Returns the data to be displayed depending on the role identifier given.
         
@@ -53,12 +53,13 @@ class SongListModel(QAbstractListModel):
                         the full path if role=FilePathRole, 
                         None if the index is invalid.
         """
-        if not index.isValid():
+        row = index.row()
+        if not self.index(row, 0).isValid():
             return None
         if role == Qt.DisplayRole:
-            return self.songs[index.row()].split("/")[-1]
+            return self.songs[row].split("/")[-1]
         if role == self.FilePathRole:
-            return self.songs[index.row()]
+            return self.songs[row]
         return None
 
     def rowCount(self, parent=QModelIndex()) -> int:
